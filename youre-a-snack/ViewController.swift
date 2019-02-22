@@ -25,6 +25,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         snackLabel.text = "Snacks"
         tableView.dataSource = self
         tableView.delegate = self
+        let results = PersistData.retrieveFromRealm()
+        print(results)
         tableView.reloadData()
     }
     
@@ -145,7 +147,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         tableView.reloadData()
-        print("hey sending this through in theory !!! \(itemsToDisplay.count)")
+        PersistData.writeToRealm(snacks: itemsToDisplay)
         
     }
     
