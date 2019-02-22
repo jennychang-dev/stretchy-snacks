@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  youre-a-snack
-//
-//  Created by Jenny Chang on 21/02/2019.
-//  Copyright © 2019 Jenny Chang. All rights reserved.
-//
-
 import UIKit
 import CoreData
 

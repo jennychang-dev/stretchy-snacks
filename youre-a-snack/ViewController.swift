@@ -1,15 +1,15 @@
 import UIKit
+import RealmSwift
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var topConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var navBarView: UIView!
     @IBOutlet weak var addIcon: UIButton!
     
     private var snackButtons = [UIButton]()
-    var itemsToDisplay = [String]()
+    var itemsToDisplay = [Snack]()
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -17,6 +17,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var stacks = [UIImageView]()
     
     var stackView = UIStackView()
+    var snack: Snack!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         snackLabel.text = "Snacks"
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.reloadData()
     }
     
     @IBAction func addIconPressed(_ sender: Any) {
@@ -110,7 +112,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     @objc func snackTapped(button: UIButton) {
-        print("tapped")
+
         guard let index = snackButtons.index(of: button) else {
             fatalError("the button \(button) is not in the array")
         }
@@ -119,21 +121,31 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         switch selectedSnack {
         case 1:
-            itemsToDisplay.append("Oreos")
+            let snack = Snack()
+            snack.name = "Oreo"
+            itemsToDisplay.append(snack)
         case 2:
-            itemsToDisplay.append("Pizza")
+            let snack = Snack()
+            snack.name = "Pizza"
+            itemsToDisplay.append(snack)
         case 3:
-            itemsToDisplay.append("Pop tarts")
+            let snack = Snack()
+            snack.name = "Pop tart"
+            itemsToDisplay.append(snack)
         case 4:
-            itemsToDisplay.append("Popsicle")
+            let snack = Snack()
+            snack.name = "Popsicle"
+            itemsToDisplay.append(snack)
         case 5:
-            itemsToDisplay.append("Ramen")
+            let snack = Snack()
+            snack.name = "Ramen"
+            itemsToDisplay.append(snack)
         default:
             print("default case")
         }
         
-        print("HERE IS MY ARRAY COUNT.. PLEASE BE MORE THAN 0 \(itemsToDisplay.count)")
         tableView.reloadData()
+        print("hey sending this through in theory !!! \(itemsToDisplay.count)")
         
     }
     
@@ -141,7 +153,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return itemsToDisplay.count
+        return PersistData.retrieveFromRealm().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -150,8 +162,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             fatalError("could not find cell")
         }
         
-        let snack = itemsToDisplay[indexPath.row]
-        cell.snackLabel.text = snack
+        let results = PersistData.retrieveFromRealm()
+        let snack = results[indexPath.row]
+        cell.snackLabel.text = snack.name
         
         return cell
         
